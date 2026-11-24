@@ -82,3 +82,6 @@ Ini model, bukan janji. Biaya sebenarnya bergantung pada mix shot dan jumlah rev
 - Reproyeksi diuji pada satu scene (interior); hasil bisa berbeda untuk lanskap/kota.
 - Plat berlapis dengan latar bersih, light groups (relighting), kabut/dust/light-rays, rack focus nyata, dan efek air **belum diuji**; klaimnya di dokumen ini hanya usulan [K].
 - Penilaian visual adalah penilaian saya; Anda yang menentukan.
+
+## 7. Benchmark Remotion (P1, 24 Nov) [U]
+Detail dan cara ulang: `pilot/p1/README.md`. Ringkas: composisi 12 dtk 3 shot (lateral parallax, push-in + rack focus, statis + atmosfer) dirender **3,0–4,1× durasi** (35,7 dtk render-only pada concurrency 3), video **60 dtk dalam 177 dtk (2,96×)**, RAM puncak 1,6–3,5 GB, CPU rata-rata 1,6–2,4 dari 4 inti, PSNR encode 44,7–45 dB, **0 kegagalan dari 9 render**, keluaran **identik byte-per-byte** di semua concurrency. Ini memperbarui model biaya §5: kompositing berlapis **≈0,10 dtk/frame di dalam Remotion (≈3 menit per menit video)**. Cacat visual komposisi benchmark dicatat jujur di README P1 (rack focus yang salah rancang, larut berbayang ganda, irisan kedalaman bergerigi).

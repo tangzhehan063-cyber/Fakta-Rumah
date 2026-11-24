@@ -185,7 +185,7 @@ Aturan tetap: kontrak shot §3; tidak ada template; teknik dipilih per shot.
 
 ---
 
-# 11. Arsitektur "Cinematic Illusion" — arah baru (USULAN, belum keputusan)
+# 11. Arsitektur "Cinematic Illusion" — arah baru (kompositor Remotion: usulan resmi bersyarat; lihat `workflow/build-phases.md`)
 
 Dasar: arahan pemilik (produksi dokumenter berdurasi menit pada CPU-only; persepsi 3D, bukan 3D penuh) dan `research/illusion-findings.md`. Prinsip: **pisahkan pembuatan dunia yang mahal (sekali) dari kompositing yang murah (berulang).** Mengganti §10.3 sebagai arah utama; §3 (kontrak shot murni-waktu) tetap.
 

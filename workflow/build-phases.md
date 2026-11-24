@@ -77,3 +77,13 @@ Konteks: produksi dokumenter menit-an pada CPU-only; 3D penuh sebagai pengecuali
 | 8+ | Fase 5–6 lama (Gemini TTS, otomasi) bergeser setelah prioritas 1–7 | | |
 
 **Keputusan yang diperlukan dari pemilik:** (a) pasang Remotion untuk prioritas 2; (b) kebijakan foto arsip pada Mode A; (c) target biaya render per menit video; (d) apakah Blender sebagai pabrik plat dapat diterima.
+
+## Keputusan pemilik (24 Nov) dan status Remotion
+| # | Keputusan | Catatan |
+|---|---|---|
+| 1 | **Remotion boleh dipasang untuk eksperimen/benchmark** (di branch ini, tanpa merusak pipeline lain; benchmark 10–15 dtk; ukur waktu, RAM, CPU, kualitas, stabilitas; jadikan kompositor resmi **jika memenuhi target**) | dikerjakan di `pilot/p1/` |
+| 2 | **Foto arsip (Mode A): hanya dengan persetujuan per kasus.** Default tetap dilarang; tiap pemakaian wajib mengajukan sumber, lisensi jelas (domain publik/CC), dan alasan naratif, dicatat di manifest | |
+| 3 | **Biaya render:** tanpa batas keras; kisaran yang nyaman **±1–1,5 jam per menit video** (interpretasi saya; koreksi bila berbeda) | |
+| 4 | **Blender (Python) sebagai pabrik plat: diterima** (hanya merender plat, bukan seluruh video) | bpy GPL-3.0; tinjau bila kode didistribusikan |
+
+**Hasil P1 terhadap target:** render 3,0–4,1× durasi (jauh di bawah 60–90× yang diterima), RAM ≤3,5 GB, stabil dan deterministik, kualitas encode transparan → **infrastruktur memenuhi target**. Usulan: **Remotion menjadi kompositor resmi, bersyarat:** (a) pemilik mengonfirmasi kelayakan lisensi Remotion (individu atau ≤3 karyawan) dan menerima risiko perubahan lisensi v5.0; (b) uji Three.js/`@remotion/three` dan audio/caption di dalam Remotion sebelum Mode B-kedalaman/C dianggap resmi. **Kualitas visual benchmark belum memenuhi standar sinematik** (lihat `pilot/p1/README.md`); itu bukan alasan menolak kompositor, tetapi pekerjaan prioritas berikutnya.
