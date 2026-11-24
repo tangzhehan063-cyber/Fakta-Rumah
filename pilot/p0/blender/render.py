@@ -31,6 +31,8 @@ cy.max_bounces = 6; cy.diffuse_bounces = 3; cy.glossy_bounces = 3; cy.transparen
 cy.use_adaptive_sampling = True
 scene.render.resolution_x = int(S["format"]["width"] * scale)
 scene.render.resolution_y = int(S["format"]["height"] * scale)
+if os.environ.get("RES"):
+    scene.render.resolution_x, scene.render.resolution_y = [int(v) for v in os.environ["RES"].lower().split("x")]
 scene.render.resolution_percentage = 100
 scene.render.image_settings.file_format = "PNG"
 scene.view_settings.view_transform = os.environ.get("VIEW", "AgX")
@@ -148,8 +150,11 @@ def apply_cam(c):
     pos, t = pose(c)
     cam.location = pos
     cam.rotation_euler = (t - pos).to_track_quat("-Z", "Y").to_euler()
-    camd.angle = math.radians(c["fov"])
-    if c.get("dof"):
+    if c.get("ortho"):
+        camd.type = "ORTHO"; camd.ortho_scale = c["ortho"]
+    else:
+        camd.type = "PERSP"; camd.angle = math.radians(c["fov"])
+    if c.get("dof") and not c.get("ortho"):
         camd.dof.use_dof = True
         camd.dof.focus_distance = c["dof"]["focus"]
         camd.dof.aperture_fstop = c["dof"]["fstop"]

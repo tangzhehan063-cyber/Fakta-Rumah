@@ -191,6 +191,7 @@ MATERIALS = {
     "bottle_b":     {"color": "#d9c9a8", "roughness": 0.4,  "metallic": 0.0},
     "bucket":       {"color": "#7d8a99", "roughness": 0.5,  "metallic": 0.0},
     "cap":          {"color": "#3c3f44", "roughness": 0.4,  "metallic": 0.0},
+    "plant":        {"color": "#5d7a5a", "roughness": 0.6,  "metallic": 0.0},
 }
 
 # ---------------------------------------------------------------- scene
@@ -198,11 +199,18 @@ def build(nm=False):
     objs = []
     add = objs.append
     # ruang: lantai + dua dinding (sudut ruangan, potongan)
-    add(rounded_box("floor", (2.8, 0.08, 2.8), 0.01, (0, -0.04, 0), "floor_tile", tile=1.2))
-    add(rounded_box("wall_back", (2.8, 2.5, 0.10), 0.01, (0, 1.25, -1.25), "wall_plaster", tile=1.4))
-    add(rounded_box("wall_left", (0.10, 2.5, 2.8), 0.01, (-1.25, 1.25, 0), "wall_plaster", tile=1.4))
-    add(plane("backsplash", (2.4, 1.15), (0, 0.575 + 0.02, -1.198), "subway_tile", uvscale=(2.4 / 1.2, 1.15 / 1.2)))
-    add(rounded_box("skirting", (2.8, 0.09, 0.012), 0.004, (0, 0.045, -1.194), "ceramic", tile=1.0))
+    if nm:   # varian isometrik: lantai/dinding diperluas agar frame terisi dunia (tanpa blok melayang di latar)
+        add(rounded_box("floor", (6.4, 0.08, 6.4), 0.01, (1.9, -0.04, 1.9), "floor_tile", tile=1.2))
+        add(rounded_box("wall_back", (6.4, 4.0, 0.10), 0.01, (1.9, 2.0, -1.25), "wall_plaster", tile=1.4))
+        add(rounded_box("wall_left", (0.10, 4.0, 6.4), 0.01, (-1.25, 2.0, 1.9), "wall_plaster", tile=1.4))
+        add(plane("backsplash", (6.2, 1.15), (1.8, 0.575 + 0.02, -1.198), "subway_tile", uvscale=(6.2 / 1.2, 1.15 / 1.2)))
+        add(rounded_box("skirting", (6.4, 0.09, 0.012), 0.004, (1.9, 0.045, -1.194), "ceramic", tile=1.0))
+    else:
+        add(rounded_box("floor", (2.8, 0.08, 2.8), 0.01, (0, -0.04, 0), "floor_tile", tile=1.2))
+        add(rounded_box("wall_back", (2.8, 2.5, 0.10), 0.01, (0, 1.25, -1.25), "wall_plaster", tile=1.4))
+        add(rounded_box("wall_left", (0.10, 2.5, 2.8), 0.01, (-1.25, 1.25, 0), "wall_plaster", tile=1.4))
+        add(plane("backsplash", (2.4, 1.15), (0, 0.575 + 0.02, -1.198), "subway_tile", uvscale=(2.4 / 1.2, 1.15 / 1.2)))
+        add(rounded_box("skirting", (2.8, 0.09, 0.012), 0.004, (0, 0.045, -1.194), "ceramic", tile=1.0))
 
     # lemari kolong (terbuka, satu pintu terbuka) — pusat di x=-0.25
     cx, cz = -0.25, -0.92
@@ -287,6 +295,20 @@ def build(nm=False):
     add(lathe("cap_b", [(0, 0), (0.013, 0), (0.013, 0.025), (0, 0.025)], (cx - 0.25, 0.08 + t + 0.18, cz - 0.17), "cap", seg=24))
     add(lathe("bucket", [(0, 0), (0.11, 0), (0.135, 0.22), (0.14, 0.225), (0.128, 0.225), (0.105, 0.012), (0, 0.012)],
               (1.0, 0.0, -0.2), "bucket", seg=48))
+    if nm:   # benda tambahan untuk varian isometrik (jalur geser kiri-kanan): rak, bangku, handuk, tanaman
+        add(rounded_box("prop_shelf", (0.9, 0.035, 0.17), 0.008, (1.05, 1.32, -1.155), "wood", tile=0.6))
+        for i, (bx, mat_, h) in enumerate([(0.78, "bottle_a", 0.2), (0.92, "bottle_b", 0.16), (1.12, "bucket", 0.12), (1.28, "bottle_a", 0.18)]):
+            add(lathe(f"prop_shelfbottle{i}", [(0, 0), (0.032, 0), (0.034, 0.012), (0.034, h - 0.04), (0.015, h), (0, h)], (bx, 1.3375, -1.155), mat_, seg=28))
+        add(rounded_box("prop_stool_top", (0.40, 0.04, 0.40), 0.012, (2.05, 0.46, -0.45), "wood_dark", tile=0.5))
+        for sx, sz in [(-1, -1), (1, -1), (-1, 1), (1, 1)]:
+            add(rounded_box(f"prop_stool_leg{sx}{sz}", (0.04, 0.44, 0.04), 0.01, (2.05 + sx * 0.16, 0.22, -0.45 + sz * 0.16), "wood_dark", tile=0.5))
+        add(rounded_box("prop_towel", (0.30, 0.07, 0.20), 0.03, (2.05, 0.515, -0.45), "ceramic", tile=0.5))
+        add(lathe("prop_pot", [(0, 0), (0.10, 0), (0.125, 0.22), (0.13, 0.23), (0.115, 0.23), (0.095, 0.02), (0, 0.02)], (-0.35, 0.0, 0.55), "bucket", seg=40))
+        for k in range(7):
+            a = k * 0.9; r_ = 0.05 + 0.02 * (k % 3); hh = 0.30 + 0.05 * (k % 4)
+            lp = fillet_path([(-0.35, 0.22, 0.55), (-0.35 + r_ * math.cos(a), 0.22 + hh * 0.6, 0.55 + r_ * math.sin(a)), (-0.35 + 2.2 * r_ * math.cos(a), 0.22 + hh, 0.55 + 2.2 * r_ * math.sin(a))], 0.04)
+            add(tube(f"prop_stem{k}", densify(lp, 0.01), 0.006, "plant", seg=8))
+            add(rounded_box(f"prop_leaf{k}", (0.11, 0.008, 0.06), 0.003, (-0.35 + 2.2 * r_ * math.cos(a), 0.22 + hh, 0.55 + 2.2 * r_ * math.sin(a)), "plant", tile=0.3, rot=rot_y(-a) @ rot_z(0.5)))
     return objs
 
 
@@ -321,7 +343,7 @@ def build_scene(nm=False):
 
 
 LAYER_MID = ("pipe_", "water", "collar_", "wall_flange", "marker_", "bottle_", "cap_", "cab_bottom", "cab_plinth")   # isi lemari (kedalaman tengah)
-LAYER_BACK = ("floor", "wall_", "backsplash", "skirting", "plate_")                        # latar
+LAYER_BACK = ("floor", "wall_", "backsplash", "skirting", "plate_", "prop_")                        # latar
 # sisanya = FRONT: cangkang lemari (sisi, meja, pintu, wastafel, keran) dan ember (paling dekat kamera)
 
 def layer_of(name):
@@ -342,6 +364,12 @@ def neutral(scene):
     L["key"]["color"] = "#fff8f0"
     L["fill"].update({"sky": "#dfe5ea", "ground": "#8b8c8c"})
     for o in scene["objects"]: o["layer"] = layer_of(o["name"])
+    # kamera isometrik sejati: ortografik, azimuth 45 derajat, elevasi 35,264 derajat; "ortho" = tinggi pandang vertikal (m)
+    EL = 35.264
+    scene["cameras"]["ISO_A"] = {"target": [-0.20, 0.55, -0.85], "az": 45, "el": EL, "dist": 6.0, "fov": 30, "ortho": 3.52, "dof": None}
+    scene["cameras"]["ISO_B"] = {"target": [-0.16, 0.45, -0.90], "az": 45, "el": EL, "dist": 6.0, "fov": 30, "ortho": 2.4, "dof": None}
+    for az in (41, 43, 45, 47, 49):
+        scene["cameras"][f"ISO_O{az}"] = {"target": [-0.20, 0.55, -0.85], "az": az, "el": EL, "dist": 6.0, "fov": 30, "ortho": 3.2, "dof": None}
     return scene
 
 if __name__ == "__main__":
