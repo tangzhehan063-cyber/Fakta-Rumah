@@ -264,3 +264,11 @@ Spesifikasi dunia P0 → masukan pabrik plat; kontrak shot → tambah `mode/plat
 5. **Rack focus = bobot ketajaman per kedalaman** (selalu ada lapisan yang tajam); blur dipanggang per lapisan (LOD) lalu cross-fade.
 6. **Transisi:** potong yang disembunyikan oleh lepas-fokus lebih aman daripada larut antar-kamera (yang menghasilkan citra ganda).
 7. Biaya pabrik plat ≈3,3–4 menit per shot (3 lapisan, 48 spp, CPU 4 inti); biaya Remotion ≈33,8 dtk per 12 dtk.
+
+## 11.10 Kamera isometrik/ortografik (dipelajari di P1 v3) [U][P]
+1. **Truck, pedestal, dan zoom pada kamera ortografik = transformasi kaku 2D tanpa parallax.** Cukup **satu plat overscan** yang digeser/diskalakan di Remotion; tanpa artefak. Resolusi plat harus setara kerapatan piksel pada zoom akhir (mis. 600 px/m untuk frame penuh; 1008 px/m untuk zoom 1,26×).
+2. **Zoom dibatasi resolusi plat:** zoom lebih besar memerlukan plat berpiksel lebih banyak (biaya Blender naik kuadratik).
+3. **Orbit memerlukan sudut pandang baru:** pakai keyframe tiap ≤2° (beauty + kedalaman 16-bit, ±97 dtk per keyframe pada 1080×1920) lalu reproyeksi mesh kedalaman ortografik; campur dua keyframe terdekat; rentangkan piksel pinggir (padding 6%) agar tidak ada lubang di tepi. Hasil bersih pada ±4° dari pusat.
+4. **Dunia harus melampaui frame:** lantai/dinding diperluas (6,4 m, tinggi 4 m) agar isometrik tidak terbaca sebagai blok diorama melayang di latar abu.
+5. **Setiap derajat kebebasan kamera punya biaya plat sendiri:** truck = 1 plat lebar; zoom = plat resolusi lebih tinggi; orbit = N keyframe. Rencanakan di storyboard.
+6. **Komposisi vertikal 9:16 pada isometrik** menyisakan area dinding atas yang besar; atur target kamera lebih rendah dan isi dinding dengan elemen bermotivasi.

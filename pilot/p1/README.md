@@ -73,3 +73,26 @@ Menjawab cacat v1. Hasil: `eval/bench12B.mp4`, `eval/bench12B_sheet.jpg`, `eval/
 - Belum diuji di Remotion: Three.js/`@remotion/three`, audio, caption.
 
 **Reproduksi plat v2** (butuh `bpy` di venv): `python3 spec/build_scene.py neutral` (dari `../p0`), lalu `SCENE=spec/scene_neutral.json VIEW="Khronos PBR Neutral" ONLY=S1_establish,S2_medium /path/venv/bin/python blender/render.py layers 48 1.0`, `ONLY=S4_high ... stills 48 1.0`, lalu `python3 scripts/make_plates2.py`. Plat tidak disimpan di Git (besar); render ulang ±15 menit.
+
+---
+
+## Versi 3 (`Bench12C`): kamera isometrik yang bergerak (24 Nov)
+Hasil: `eval/bench12C_iso.mp4`, `eval/bench12C_sheet.jpg`, `eval/bench12C_detail.jpg`. Kamera **isometrik sejati** (ortografik, azimuth 45°, elevasi 35,264°). Dikerjakan **tanpa library baru** (keputusan pemilik); repo lain yang dievaluasi hanya dijadikan referensi (lihat `research/ecosystem-research.md` dan pesan laporan).
+
+| Shot | Gerak kamera | Cara | Biaya plat (sekali) |
+|---|---|---|---|
+| A (0-3,8 dtk) | **truck kiri-kanan** + sedikit pedestal | satu plat overscan lebar 3240×2112 digeser di Remotion; ortografik = translasi kaku **tanpa parallax** (benar secara fisik, tanpa artefak) | 312 dtk |
+| B (3,8-8,2 dtk) | **push-in ortografik 1,26×** + rack focus cangkang depan→pipa | plat berlapis BACK/MID/FRONT 1361×2419 + blur LOD | BACK 171 + MID 49 + FRONT 62 = 282 dtk |
+| C (8,2-12 dtk) | **orbit isometrik 41°→49°** (menetap dari kabur ke tajam) | 5 keyframe 2° (beauty+kedalaman) lalu **reproyeksi mesh kedalaman ortografik**, dua keyframe terdekat dicampur; piksel pinggir direntangkan 6% | 5 × ±97 dtk + kedalaman 0,5 dtk; pass reproyeksi 228 gambar = 108 dtk (0,47 dtk/gambar) |
+
+**Biaya:** pabrik plat total **1.084 dtk (18 menit)** untuk tiga shot. Render Remotion 12 dtk: **25,2 dtk** (c=3), RAM puncak 2,3 GB, CPU rata-rata 3,29 inti.
+
+**Penilaian visual (jujur):**
+- Berhasil: truck kiri-kanan bersih; orbit bersih pada resolusi penuh (tanpa robekan tepi; kabinet berputar mulus); rack focus di B membuat pipa terbaca (cangkang depan blur, pipa tajam).
+- **Komposisi A lemah:** sekitar 40% bagian atas frame adalah dinding kosong dan detik pertama hampir hanya dinding + tanaman. Ini tepat jenis area kosong yang tidak Anda inginkan. Perlu menurunkan target kamera dan/atau mengisi dinding (jendela, bingkai) dan memotivasi cahaya.
+- **B kurang terbaca dibanding versi perspektif:** zoom hanya 1,26× (dibatasi resolusi plat) dan pada 45° pipa sebagian terhalang panel kanan; mekanisme tidak sejelas S2 perspektif.
+- **Ortografik = tanpa parallax:** kedalaman hanya dari bayangan, oklusi, blur; sesuai referensi isometrik tetapi terasa lebih "datar" saat truck.
+- Orbit hanya 8° dan pada satu sumbu; elevasi/orbit besar belum diuji.
+- Dunia masih kamar mandi bersih; dinding/lantai besar polos. Belum ada cahaya jendela bermotivasi.
+
+**Aturan baru (arsitektur §11.10):** lihat `ARCHITECTURE.md`.
