@@ -2,7 +2,7 @@
 
 Repository produksi video explainer/edukasi. Dimulai dari nol (clean slate); tidak menyalin `Channel-Penjelasan`.
 
-**Status: Fase 1 — riset dan desain arsitektur (menunggu review). Belum ada engine, belum ada video.**
+**Status: Fase 2 — analisis referensi dan draf identity (menunggu review). Belum ada engine, belum ada video.**
 
 ## Peta dokumen (baca berurutan)
 
@@ -17,6 +17,7 @@ Repository produksi video explainer/edukasi. Dimulai dari nol (clean slate); tid
 | 5 | [`identity/visual-identity.md`](identity/visual-identity.md) | Draft Visual Identity Spec (kerangka, belum final) |
 | 6 | [`workflow/pilot-plan.md`](workflow/pilot-plan.md) | Rencana pilot untuk menguji style & kualitas animasi |
 | 7 | [`research/ecosystem-research.md`](research/ecosystem-research.md) | Laporan riset: lisensi, kelebihan/kekurangan, rekomendasi |
+| 9 | [`identity/references/`](identity/references/00-perbandingan.md) | Analisis 3 referensi + perbandingan + identitas kandidat |
 | 8 | [`research/repo-lama-audit.md`](research/repo-lama-audit.md) | Audit read-only repo lama: masalah, yang layak dipertahankan |
 
 ## Struktur
