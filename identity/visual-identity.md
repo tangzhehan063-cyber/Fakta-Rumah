@@ -18,6 +18,9 @@
 
 Catatan: "clay putih steril" dihindari berarti dunia butuh **material dan karakter bahan** (kayu, kain, kaca, logam, kerikil), bukan putih polos.
 
+## 0c. Arah engine "Cinematic Illusion" (arahan pemilik, 24 Nov) **[M]**
+Persepsi dunia 3D sinematik dengan teknik termurah; **3D penuh bukan default**. Kamera, cahaya, depth, dan atmosfer disimulasikan sehingga penonton tidak langsung mengenali bahwa scene dibangun dari lapisan. Palet **netral dengan aksen hangat terkendali**; hindari cokelat/oranye/teal berlebihan, bloom berlebihan, cahaya volumetrik dramatis, dan preset sinematik generik. Efek (partikel, sapuan cahaya, DOF, zoom) **hanya bila bertujuan naratif**, tidak diterapkan ke setiap shot. Detail arsitektur: `ARCHITECTURE.md` §11.
+
 ## 1. Arah visual keseluruhan
 - **[M]** *Stylized illustrated animation*, bukan fotorealistis; dimensional, berlapis, berdetail relevan, kamera dirancang, animasi lancar. Teknologi tidak menentukan style.
 - **[B]** Tampilan hipotetis: *dunia 3D yang kohesif dengan cahaya lembut berarah, permukaan matte bevel, tanpa outline*, dan informasi hidup di dalam dunia (01–03).

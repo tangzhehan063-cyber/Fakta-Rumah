@@ -11,8 +11,8 @@ import bpy
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 mode = sys.argv[1] if len(sys.argv) > 1 else "stills"
-samples = int(sys.argv[2]) if len(sys.argv) > 2 else 64
-scale = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+samples = int(sys.argv[2]) if (len(sys.argv) > 2 and sys.argv[2].isdigit()) else 64
+scale = 1.0 if mode == "depth" else (float(sys.argv[3]) if len(sys.argv) > 3 else 1.0)
 S = json.load(open(os.path.join(ROOT, "spec/scene.json")))
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -173,10 +173,38 @@ def render(path):
     bpy.ops.render.render(write_still=True)
     return time.time() - t0
 
+
+if mode == "depth":
+    zmin, zmax = 1.0, 9.0
+    dm = bpy.data.materials.new("depth"); dm.use_nodes = True
+    nt2 = dm.node_tree
+    for n in list(nt2.nodes): nt2.nodes.remove(n)
+    cd = nt2.nodes.new("ShaderNodeCameraData"); mr = nt2.nodes.new("ShaderNodeMapRange")
+    mr.inputs["From Min"].default_value = zmin; mr.inputs["From Max"].default_value = zmax
+    mr.inputs["To Min"].default_value = 0.0; mr.inputs["To Max"].default_value = 1.0; mr.clamp = True
+    comb = nt2.nodes.new("ShaderNodeCombineColor"); em = nt2.nodes.new("ShaderNodeEmission"); out = nt2.nodes.new("ShaderNodeOutputMaterial")
+    nt2.links.new(cd.outputs["View Z Depth"], mr.inputs["Value"])
+    for ch in ("Red", "Green", "Blue"): nt2.links.new(mr.outputs["Result"], comb.inputs[ch])
+    nt2.links.new(comb.outputs["Color"], em.inputs["Color"]); nt2.links.new(em.outputs["Emission"], out.inputs["Surface"])
+    bpy.context.view_layer.material_override = dm
+    scene.view_settings.view_transform = "Raw"; scene.view_settings.look = "None"
+    cy.samples = 1; cy.use_denoising = False; cy.use_adaptive_sampling = False
+    scene.render.filter_size = 0.01
+    scene.render.image_settings.color_depth = "16"
+    scene.render.image_settings.color_mode = "BW"
+    world.node_tree.nodes["Background"].inputs["Color"].default_value = (1, 1, 1, 1)
+    for l in (sun_d, pt): l.energy = 0
+    scene.world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.0
+    os.makedirs(os.path.join(ROOT, "out/blender"), exist_ok=True)
+    for name in sys.argv[2:]:
+        apply_cam(S["cameras"][name]); camd.dof.use_dof = False
+        t = render(os.path.join(ROOT, f"out/blender/depth_{name}.png")); print("depth", name, round(t, 1), "s")
+    sys.exit(0)
 timings = {}
 if mode == "stills":
     os.makedirs(os.path.join(ROOT, "out/blender"), exist_ok=True)
     for name, c in S["cameras"].items():
+        if os.environ.get("ONLY") and name not in os.environ["ONLY"].split(","): continue
         apply_cam(c)
         timings[name] = render(os.path.join(ROOT, f"out/blender/{name}_s{samples}.png"))
         print(name, round(timings[name], 1), "s", flush=True)

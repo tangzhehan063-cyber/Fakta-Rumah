@@ -182,3 +182,76 @@ Aturan tetap: kontrak shot §3; tidak ada template; teknik dipilih per shot.
 - **Sadar-rasio:** format (`9:16` sekarang, `16:9` kelak) hidup di manifest `video.json`. Komponen shot menerima ukuran kanvas dan tidak meng-hardcode 1080×1920. Komposisi per rasio dipikirkan di storyboard (satu shot boleh punya framing berbeda per rasio).
 - **Pilot memuat dua jalur render** (stack web dan Blender-Python) untuk set uji yang sama, dengan kontrak shot yang sama (shot dapat berupa urutan frame dari renderer lain).
 - **Tanpa karakter:** tidak ada kebutuhan rigging; prioritas pindah ke cahaya, material berkarakter, kamera, dan reveal prosedural.
+
+---
+
+# 11. Arsitektur "Cinematic Illusion" — arah baru (USULAN, belum keputusan)
+
+Dasar: arahan pemilik (produksi dokumenter berdurasi menit pada CPU-only; persepsi 3D, bukan 3D penuh) dan `research/illusion-findings.md`. Prinsip: **pisahkan pembuatan dunia yang mahal (sekali) dari kompositing yang murah (berulang).** Mengganti §10.3 sebagai arah utama; §3 (kontrak shot murni-waktu) tetap.
+
+## 11.1 Dua mesin, satu kontrak
+```
+                    ┌───────────────────────────────┐
+  spesifikasi dunia │  PABRIK PLAT (mahal, sekali)  │  cache berbasis hash
+  (JSON + generator)│  Blender/Three.js kualitas    │  cache/plates/<hash>/
+  ─────────────────►│  beauty, kedalaman, topeng    │
+                    │  objek/lapisan, plat latar    │
+                    │  bersih, (lightgroups)        │
+                    └───────────────┬───────────────┘
+                                    │ plat + metadata
+                    ┌───────────────▼───────────────┐
+  storyboard + mode │  KOMPOSITOR (murah, per frame)│  Remotion
+  per shot ────────►│  bidang berkedalaman, kamera, │  → frame JPEG/segmen
+                    │  efek cahaya/atmosfer/blur LOD│  → ffmpeg
+                    └───────────────────────────────┘
+```
+- **Pabrik plat:** dari spesifikasi dunia (sama dengan format P0) menghasilkan *plat*: beauty, peta kedalaman 16-bit (0,5–1,1 dtk per plat [U]), topeng per objek/lapisan, **plat latar bersih** tanpa objek depan (untuk menutup disokulasi), dan blur LOD (mis. 0/4/12 px). Kunci cache = hash(spesifikasi + kamera + pengaturan). Revisi narasi/waktu/kamera-dalam-amplop **tidak** memicu render ulang plat.
+- **Kompositor:** adegan multi-bidang. Setiap bidang punya z, topeng, LOD blur, dan efek (cahaya, kabut). Kamera berbasis data (koordinat bola, sama seperti P0) menggerakkan semua bidang lewat satu fungsi: DOM/CSS-3D untuk bidang datar, mesh kedalaman Three.js untuk parallax kedalaman, R3F untuk geometri sederhana (Mode C).
+- **Kontrak shot** (perluasan §3): `{ id, mode: A|B|C|D, plates: [...], camera: {plan, envelope}, effects: [...], purpose }`. Teknik tetap detail internal shot.
+
+## 11.2 Empat mode produksi (per shot, bukan per video)
+| Mode | Isi | Teknik | Biaya terukur/perkiraan | Catatan |
+|---|---|---|---|---|
+| **A Cinematic 2D** | citra statis berlapis, kamera kecil, cahaya, atmosfer | lapisan + CSS-3D + blur LOD | ≈ 0,15–0,3 dtk/frame [U] | **Foto arsip/gambar nyata hanya dengan persetujuan eksplisit per kasus** (syarat mutlak §1b); tanpa AI |
+| **B Cinematic 2.5D** | lingkungan/objek dengan kedalaman, reveal | plat dari 3D + peta kedalaman + bidang perspektif | ≈ 0,35–0,4 dtk/frame [U] | **amplop gerak kamera sempit** (§11.4) |
+| **C 3D prosedural** | mekanisme bergerak, perakitan, sisi berbeda | Three.js hemat (shadow statis, tanpa AO/DOF/MSAA real-time) | ≈ 1,3 dtk/frame [U] | AO/DOF boleh **dipanggang** atau ditambahkan di kompositor |
+| **D 3D penuh** | simulasi, perubahan struktur besar, gerak kamera besar | Blender (pra-render) atau 3D web | ≈ 17 dtk (web berat) – ±47 dtk+ (Cycles 16 spp) per frame [U/ekstrapolasi] | pengecualian; di-cache per shot |
+
+## 11.3 Sistem keputusan teknik per shot (usulan)
+Pertanyaan berurutan, ambil mode termurah yang lolos:
+1. Apakah ada **gerak benda** atau perubahan sisi (perakitan, aliran, simulasi)? Ya → C (atau D bila simulasi). Tidak → lanjut.
+2. **Kamera bergerak melewati amplop 2.5D?** Ya → C/D, atau bagi menjadi dua plat + transisi bermotivasi. Tidak → lanjut.
+3. Apakah butuh **kedalaman nyata** (parallax kuat, orbit kecil)? Ya → B. Tidak → A.
+4. Efek tambahan hanya bila **punya tujuan naratif** (lihat 11.5).
+
+**Anggaran variasi (usulan, dicek otomatis di storyboard):** per video, push-in ≤ 30% shot; ≥ 15% shot statis; ≥ 15% lateral/tracking; partikel ≤ 35%; sapuan cahaya ≤ 25%; DOF aktif ≤ 40%; tidak ada dua shot berurutan dengan kombinasi kamera+efek identik. Angka bisa diubah pemilik; tujuannya mencegah repetisi.
+
+## 11.4 Amplop kamera untuk 2.5D (dari data §3 findings [U][P])
+Dari satu plat: PSNR ≥ 32 dB hingga ≈15% jalur uji (dolly ≲0,3 m dari 3,9 m; orbit ≲2–3°); turun cepat sesudahnya. Keputusan sementara: **amplop B = ±8–10% dolly dan ±3° orbit/tilt per plat**; gerak lebih besar memakai plat tambahan dan transisi bermotivasi (bukan cross-fade polos, yang menghasilkan bayangan ganda), atau Mode C/D. Amplop harus dikalibrasi ulang dengan plat berlapis (belum diuji).
+
+## 11.5 Toolkit ilusi (status)
+| Kapabilitas | Teknik | Status |
+|---|---|---|
+| Push-in, pan, tilt, tracking kecil | transform bidang + mesh kedalaman | **terbukti** dalam amplop [U] |
+| Orbit ilusi / perspective shift | mesh kedalaman, plat berlapis | terbukti sempit; berlapis **belum diuji** |
+| Parallax dan multi-plane | z per bidang (CSS-3D) | **terbukti murah** [U] |
+| Blur fokus / rack focus | blur LOD dipanggang + cross-fade | murah [U: 0,27 dtk]; kualitas visual **belum dinilai** |
+| Sapuan cahaya, highlight bergerak | overlay gradien + blend, topeng | murah [U]; kualitas **belum dinilai** |
+| Relighting (cahaya jendela bergeser) | *light groups* di Blender → kompositing intensitas | [K] **belum diuji** |
+| Kabut, debu, berkas cahaya | lapisan prosedural berkedalaman + topeng | [K] belum diuji |
+| Partikel halus | canvas/DOM | murah [U]; aturan: hanya bila beralasan |
+| Material (logam, kaca, air) | sapuan cahaya, refleksi dipanggang, tekstur bergerak | [K] belum diuji |
+| Handheld micro-motion | noise deterministik (`@remotion/noise`, MIT) | [K] sangat selektif |
+
+## 11.6 Performa dan operasional
+- **Tiga tingkat pratinjau:** (1) contact sheet still dari kompositor ×0,25; (2) animatic 540p 15 fps; (3) final. Hanya (3) memicu render penuh.
+- **Render per shot + cache frame** (shot yang tidak berubah dilewati), digabung ffmpeg, seperti pola render-per-bagian repo lama [V].
+- **Anggaran biaya per shot** dicatat di manifest (mode, ms/frame terukur, jumlah plat).
+- Hindari blur real-time dan filter berat; pakai LOD dipanggang. Paralelisme 4 worker hanya ±1,7× pada isi berat [U]; rancang agar isi murah.
+- Resolusi sadar-rasio (9:16 sekarang, 16:9 kelak) di manifest.
+
+## 11.7 QA tambahan untuk ilusi
+Selain Q0–Q5 (§6): **Q6 artefak ilusi** — cek tarikan tekstur di tepi benda, bayangan ganda, lubang disokulasi, pop antar-keyframe, di frame-frame kritis; **Q7 variasi** — pemeriksaan anggaran variasi §11.3; **Q8 persepsi** — tinjauan visual manusia/Claude terhadap klip (wajib; kode berjalan bukan bukti lulus).
+
+## 11.8 Yang perlu didesain ulang dari keadaan sekarang
+Spesifikasi dunia P0 → masukan pabrik plat; kontrak shot → tambah `mode/plates/envelope`; renderer web P0 → profil "hemat" sebagai bawaan; Blender → pabrik plat (bukan perender video penuh); QA → Q6–Q8; manifest `video.json` → tambah mode, plat, anggaran.

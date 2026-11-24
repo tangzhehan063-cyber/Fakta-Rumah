@@ -59,3 +59,21 @@ Lihat `identity/visual-identity.md` §0b (8 keputusan: arah suka, sudut kamera, 
 | 4 | Pasang `remotion-dev/skills` saat Fase 3? | Ya, hanya Fase 3 |
 | 5 | Naskah/topik repo lama boleh dipakai sebagai bahan pilot? | Boleh, dipilih bersama |
 | 6 | Kebijakan Git: Claude tidak merge ke `main`; PR hanya atas permintaan | Usul dipertahankan |
+
+---
+
+## Revisi rencana (Fase 3) setelah arahan "Cinematic Illusion" — USULAN, menunggu persetujuan
+Konteks: produksi dokumenter menit-an pada CPU-only; 3D penuh sebagai pengecualian. Dasar: `research/illusion-findings.md`, `ARCHITECTURE.md` §11.
+
+| Prioritas | Pekerjaan | Hasil | Gerbang |
+|---|---|---|---|
+| **1** | **Pabrik plat (resmi):** ubah spesifikasi scene P0 menjadi keluaran plat: beauty, kedalaman, topeng objek, **plat latar bersih**, blur LOD; cache berbasis hash | folder plat + manifest plat | uji: plat latar bersih menutup disokulasi pada gerak sedang |
+| **2** | **Kompositor prototipe di Remotion** (butuh persetujuan memasang Remotion + konfirmasi lisensi): bidang berkedalaman, kamera data, blur LOD, sapuan cahaya | satu shot 6 dtk dari plat; **benchmark nyata Remotion** | ≤ 0,5 dtk/frame pada 1080×1920 dan kualitas diterima pemilik |
+| **3** | **Amplop kamera + disokulasi:** kalibrasi ulang amplop 2.5D dengan plat berlapis | tabel amplop per jenis gerak | PSNR/visual aman hingga gerak yang dibutuhkan dokumenter |
+| **4** | **Atmosfer dan cahaya:** light groups (relighting), kabut/debu/berkas, rack focus, sapuan cahaya | klip uji per efek + biaya | pemilik menilai "tidak seperti preset AI/bloom berlebihan" |
+| **5** | **Sistem keputusan + anggaran variasi + manifest** (mode, plat, anggaran) | skema `video.json` + pemeriksa storyboard | storyboard contoh lolos Q7 |
+| **6** | **Mode C hemat:** satu mekanisme (mis. pipa-U) dengan perakitan dan aliran | klip Mode C dengan shadow statis/AO dipanggang | ≤ 1,5 dtk/frame dan terbaca jelas |
+| **7** | **Mini dokumenter 60–90 dtk** dengan campuran A/B/C | video uji + laporan biaya total | total render ≤ beberapa jam di container ini |
+| 8+ | Fase 5–6 lama (Gemini TTS, otomasi) bergeser setelah prioritas 1–7 | | |
+
+**Keputusan yang diperlukan dari pemilik:** (a) pasang Remotion untuk prioritas 2; (b) kebijakan foto arsip pada Mode A; (c) target biaya render per menit video; (d) apakah Blender sebagai pabrik plat dapat diterima.

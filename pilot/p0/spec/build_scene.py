@@ -299,6 +299,12 @@ def build_scene():
         "S3_macro":     {"target": [-0.15, 0.40, -0.90], "az": 8,  "el": 4,  "dist": 0.85, "fov": 30, "dof": {"focus": 0.85, "fstop": 1.8}},
         "S4_high":      {"target": [-0.15, 0.40, -0.92], "az": 22, "el": 42, "dist": 2.3, "fov": 30, "dof": {"focus": 2.3, "fstop": 4.0}},
     }
+    # keyframe tambahan untuk uji "reproyeksi berkeyframe" (jalur kamera S1->S2 pada u=0.33 dan u=0.66)
+    a, b = cams["S1_establish"], cams["S2_medium"]
+    for nm, u in (("K1_third", 0.33), ("K2_twothird", 0.66)):
+        l = lambda p, q: p + (q - p) * u
+        cams[nm] = {"target": [l(x, y) for x, y in zip(a["target"], b["target"])], "az": l(a["az"], b["az"]), "el": l(a["el"], b["el"]),
+                    "dist": l(a["dist"], b["dist"]), "fov": 30, "dof": None}
     scene = {
         "units": "m", "up": "y", "format": {"width": 1080, "height": 1920, "fps": 30},
         "materials": MATERIALS, "objects": objs, "cameras": cams,

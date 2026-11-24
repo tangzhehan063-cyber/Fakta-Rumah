@@ -2,3 +2,5 @@ node_modules/
 frames/
 *.exr
 out/**/*.png
+bench/layers/
+bench/b3out/
