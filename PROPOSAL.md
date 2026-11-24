@@ -60,13 +60,17 @@ Pemetaan ke 11 pemisahan yang Anda minta: project instructions → `CLAUDE.md`; 
 
 **Sengaja tidak ada:** folder `skills/`, folder per kategori, library komponen, config sistem. Skill baru ditambahkan hanya jika satu langkah workflow terbukti berulang dan sulit diikuti tanpa skill.
 
-## 4. Keputusan yang saya butuhkan dari Anda
+## 4. Status keputusan (diperbarui setelah balasan pemilik)
 
-1. **Referensi visual.** Ini penghalang terbesar. Tanpa 3–6 referensi (video/gambar/channel), `visual-identity.md` tetap kerangka kosong. Bisa tautan YouTube, file, atau gambar.
-2. **Bahasa & format video.** Bahasa narasi (Indonesia?), rasio (16:9 / 9:16 / keduanya), durasi tipikal.
-3. **Narasi/suara.** Voiceover dari mana (rekaman sendiri, TTS)? Ini memengaruhi workflow timing. (Catatan: "tanpa external AI API" saya baca sebagai larangan untuk visual; TTS perlu Anda tegaskan.)
-4. **Riset ekosistem.** Setujukah saya menjalankan riset web terverifikasi (versi lisensi, aktivitas repo) sebagai langkah berikutnya, sebelum instalasi apa pun?
-5. **Repo lama.** Boleh saya baca (read-only) untuk mengambil aset/dokumen yang layak? Default saya: tidak, sampai Anda tunjuk.
+| Hal | Status |
+|---|---|
+| Referensi visual | Dikirim bertahap oleh pemilik. Identity **hanya** dari analisis referensi tersebut |
+| Format & produksi | Akan didefinisikan; sistem harus mendukung automasi. Nilai warisan dari repo lama (1080×1920, Shorts, 50–70 dtk) dicatat di `research/repo-lama-audit.md` §5 sebagai usulan yang perlu dikonfirmasi |
+| Riset web | **Selesai**: `research/ecosystem-research.md`. Tidak ada instalasi |
+| Repo lama | **Diaudit read-only**: `research/repo-lama-audit.md`. Tidak ada salinan |
+| Gemini TTS & workflow otomatis | Akan diintegrasikan kembali di Fase 5–6 setelah fondasi visual tervalidasi |
+| Rencana fase | `workflow/build-phases.md` (6 fase, keputusan terbuka di bagian akhirnya) |
+| Arsitektur | `ARCHITECTURE.md` (draft untuk review) |
 
 ## 5. Risiko yang perlu Anda sadari (tantangan)
 
