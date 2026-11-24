@@ -15,6 +15,25 @@ Yang sudah dinyatakan pemilik:
 - Bukan: slide, infografis bergerak, diagram buku pelajaran, objek SVG muncul satu per satu, scene flat tanpa depth, zoom/pan generik, CGI/archviz, demo software 3D, top-down default, minimalis berlebihan.
 - Teknologi tidak menentukan style.
 
+## 1b. Syarat mutlak kualitas visual (pernyataan pemilik, Fase 2; berlaku untuk semua shot)
+
+**Gagal otomatis** (hasil dianggap *failed visual approach*) bila terlihat seperti:
+- diagram datar top-down, susunan objek 1D/2D, slideshow, gambar statis dengan overlay beranimasi;
+- foto dengan elemen kartun ditempel di atas;
+- objek 3D sederhana yang melayang di atas latar datar;
+- animasi yang secara teknis bergerak tetapi datar, murahan, terputus, atau seperti slide.
+
+**Wajib:**
+- Setiap scene dibangun sebagai satu lingkungan visual yang utuh: ilustrasi, objek, cahaya, perspektif, kamera, depth, dan animasi berada di dunia visual yang sama.
+- Komposisi spasial bermakna, depth meyakinkan, lingkungan berdimensi, detail kaya bila relevan, sudut kamera yang disengaja, staging kuat, animasi halus.
+- Scene harus terasa seperti *shot animasi sungguhan*.
+
+**Dilarang tanpa persetujuan eksplisit per pendekatan:** foto/gambar nyata sebagai latar dengan elemen animasi di atasnya.
+
+**Dilarang sebagai default:** kamera overhead, layout datar, komposisi geometris sederhana, framing kamera statis.
+
+**Cara menilai:** hanya dengan menonton render nyata. Kode berjalan atau animasi ada **bukan** bukti lulus.
+
 ## 2. Identitas vs variasi
 
 | Konsisten antar video (identitas) | Boleh berubah per video/kategori |
