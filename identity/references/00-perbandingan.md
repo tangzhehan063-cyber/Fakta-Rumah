@@ -76,4 +76,4 @@ Karakter (hanya 01), adegan malam dan bloom (02), diorama potongan (02/03), huru
 Apa yang Anda sukai dari tiap video; apakah sudut oblik-tinggi memang diinginkan; apakah karakter dibutuhkan; kerapatan detail target; format 16:9 atau 9:16; apakah ritme/transisi atau pencahayaan yang jadi alasan memilihnya.
 
 ## 6. Jawaban pemilik atas pertanyaan terbuka
-Ringkasan di `identity/visual-identity.md` §0b. Hal yang masih terbuka: **frame rate** (ref 01 bersumber 15 fps), **palet dasar hangat vs netral**, **caption 2D**, dan **klarifikasi "engine lain"** (lihat laporan Fase 2).
+Ringkasan di `identity/visual-identity.md` §0b. Hal yang masih terbuka: **frame rate** (ref 01 bersumber 15 fps), **palet dasar hangat vs netral**, **caption 2D**.

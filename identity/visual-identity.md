@@ -12,7 +12,7 @@
 | 3 | **Karakter: dihindari.** Tidak ada sistem karakter. Dunia, objek, kamera, reveal yang bercerita | §7; `characters/` dibatalkan dari rencana engine |
 | 4 | **Format:** **9:16 (1080×1920) sekarang**; 16:9 menyusul bila sistem sudah baik. Sistem harus **sadar-rasio** sejak awal | Komposisi dirancang vertikal dulu; format di manifest, bukan hard-code |
 | 5 | **Kerapatan detail:** bertingkat menurut fokus (area yang dijelaskan paling detail, sisanya disederhanakan, tanpa terlihat kosong) | §6, §11 |
-| 6 | **Alat render:** uji stack web **dan** Blender-Python di pilot; bila keduanya kurang baik, pemilik akan mencari engine lain (**lihat klarifikasi di bawah**) | Pilot P0 bake-off wajib memuat kedua jalur |
+| 6 | **Alat render:** uji stack web **dan** Blender-Python di pilot; bila keduanya kurang baik, pemilik akan mencari engine/repo open-source orang lain. **Klarifikasi: larangan AI untuk visual tetap mutlak**; "engine lain" = engine/repo non-AI dari GitHub, tetap lewat evaluasi lisensi dan adopt/adapt/reference di `research/` serta persetujuan sebelum dipasang | Pilot P0 bake-off wajib memuat kedua jalur |
 | 7 | **Video 03:** referensi **style dan proses** | contoh render kamar potongan ikut jadi acuan tampilan; metode 3 tingkat + ortografik/perspektif dipakai |
 | 8 | **Dihindari:** label berbaris ala slide; lantai kosong luas; clay putih steril. (Blok melayang tetap terlarang lewat §1b) | §15 |
 
