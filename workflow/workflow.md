@@ -35,9 +35,9 @@ Pemilik meninjau direction + storyboard bila ada keputusan kreatif besar (style 
 ## 7. Produksi → `src/`
 Implementasi sesuai storyboard. Jika ada penyimpangan kreatif, hentikan dan kembali ke storyboard. Iterasi dengan render pendek (klip/frame), bukan menebak dari kode. Komponen baru boleh ekstrak ke `engine/` atau `assets/` hanya setelah dipakai ≥2 video.
 
-## 8. Render & QA
+## 8. Render & QA → `out/`, `qa/`
 > Syarat mutlak kualitas ada di `identity/visual-identity.md` §1b. Shot yang melanggarnya dinyatakan gagal, apa pun status kodenya.
- → `out/`, `qa/`
+
 Tonton render aktual. Checklist ada di `qa/checklist.md` (dibuat saat pilot): keterbacaan, fokus, depth, timing, kontinuitas spasial, kesesuaian dengan identity, akurasi fakta, audio sinkron. Temuan dicatat; hanya perbaiki yang terlihat di render.
 
 ## Perubahan aturan
