@@ -2,37 +2,7 @@
 
 **Tujuan pilot:** menguji (1) apakah style yang diterjemahkan dari referensi benar-benar yang Anda maksud, dan (2) apakah kualitas animasi yang Anda inginkan **dapat dicapai lewat kode dengan biaya wajar**. Pilot **bukan** membangun engine dan **bukan** video siap tayang.
 
-## Revisi Fase 2 — Usulan Pilot Fase 3 (berdasarkan referensi 01–03)
-
-> Menggantikan rincian P0–P2 di bawah **bila Anda menyetujui**. Belum final; bergantung pada jawaban atas pertanyaan terbuka di `identity/references/00-perbandingan.md` §5.
-
-**Prinsip:** menguji *kualitas tampilan* dan *biaya*, bukan engine. Setiap eksperimen kecil dan boleh dibuang. Penilaian dari **render yang ditonton**.
-
-### P0 — Look-dev "bake-off" (still 4–6 frame)
-Satu set yang sama (mis. sudut ruang rumah dengan cahaya jendela + satu objek mekanis) dibangun lewat 2–3 teknik: (a) Three.js real-time, (b) Three.js + pra-bake cahaya, (c) SDF clay untuk objek hero, (d) *opsional* Blender headless. Dibandingkan dengan Referensi 01/03 (cahaya, bevel, depth).
-**Lulus:** Anda memilih teknik yang "terasa satu dunia", bukan datar; kekurangan dapat dinyatakan sebagai parameter.
-
-### P1 — Gerak kamera + reveal (klip 6–8 dtk)
-Kamera kontinu dengan DOF melewati set; **reveal prosedural** (objek tumbuh/terbentuk berurutan seperti Ref 02) yang membuat sebab-akibat terbaca. **Lulus:** terasa shot animasi sungguhan; tidak ada "objek muncul satu per satu" tanpa sebab.
-
-### P2 — Informasi di dalam dunia (klip 6–8 dtk)
-Teks 3D dan label yang hidup di dalam perspektif dunia, plus layar perangkat dengan tekstur dinamis. **Lulus:** terbaca jelas dan tidak seperti slide/overlay.
-
-### P3 — Uji kelayakan karakter (hanya jika Anda memutuskan karakter)
-Karakter sederhana berpose + siklus jalan 3–4 dtk. Keputusan **go / no-go** berdasarkan biaya dan tampilan.
-
-### P4 — Mini-video 30–60 dtk (workflow penuh)
-Satu topik rumah nyata yang memuat **mekanisme + lingkungan sehari-hari** sekaligus. Hanya setelah P0–P2 lulus.
-
-### Metrik yang dicatat sejak P0
-Waktu kerja per detik video, waktu render per detik video, determinisme (render ganda identik), ukuran file, dan penilaian Anda (ya / hampir / tidak) per klip.
-
-### Syarat masuk
-Jawaban Anda atas pertanyaan terbuka; keputusan lisensi Remotion (bila dipakai); izin memasang dependency (dan, bila Blender dipertimbangkan, izin memasangnya).
-
----
-
-## Prasyarat (versi awal, Fase 1)
+## Prasyarat
 - ≥3 referensi dari pemilik, dianalisis dan keranjangnya disetujui.
 - Keputusan awal: format/rasio, ada/tidaknya karakter.
 - Riset ekosistem (`research/ecosystem-research.md`) disetujui sebagian: minimal tentang apa yang boleh dipakai untuk render/preview.

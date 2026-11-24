@@ -1,7 +1,0 @@
-00:00.379  cycles           | WARNING CUEW initialization failed: Error opening the library
-/home/user/fakta-rumah/pilot/p0/blender/render.py:54: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
-  mat.use_nodes = True
-/home/user/fakta-rumah/pilot/p0/blender/render.py:123: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
-  world = bpy.data.worlds.new("w"); scene.world = world; world.use_nodes = True
-01:56.391  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/S4_high_s48.png'
-S4_high 115.7 s

@@ -1,37 +1,19 @@
 # Fakta Rumah
 
-Repository produksi video explainer/edukasi. Dimulai dari nol (clean slate); tidak menyalin `Channel-Penjelasan`.
+Repository produksi video explainer/edukasi. Dimulai dari nol; tidak menyalin `Channel-Penjelasan`.
 
-**Status: Fase 2 — analisis referensi dan draf identity (menunggu review). Belum ada engine, belum ada video.**
+**Status: RESET (24 Nov 2026).** Kode pilot dan arah visual hasil Fase 2–3 dihapus atas permintaan pemilik. Menunggu arah visual baru dari pemilik. **Tidak ada engine, tidak ada keputusan style.**
 
-## Peta dokumen (baca berurutan)
+Seluruh pekerjaan sebelum reset tetap ada di riwayat Git (commit `8b0267d`); pulihkan bagian tertentu dengan `git checkout 8b0267d -- <path>`.
 
-| # | Dokumen | Isi |
-|---|---------|-----|
-| 1 | [`PROPOSAL.md`](PROPOSAL.md) | Struktur repo, prinsip, status keputusan |
-| 1b | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Arsitektur berlapis, kontrak shot, manifest, QA, batas otomasi |
-| 1c | [`workflow/build-phases.md`](workflow/build-phases.md) | Rencana 6 fase + keputusan terbuka |
-| 2 | [`workflow/workflow.md`](workflow/workflow.md) | Alur produksi video, adaptif per kategori |
-| 3 | [`workflow/categories.md`](workflow/categories.md) | Kategori konten: pertanyaan kunci & opsi (bukan template) |
-| 4 | [`identity/reference-analysis-framework.md`](identity/reference-analysis-framework.md) | Cara membedah video/gambar referensi |
-| 5 | [`identity/visual-identity.md`](identity/visual-identity.md) | Draft Visual Identity Spec (kerangka, belum final) |
-| 6 | [`workflow/pilot-plan.md`](workflow/pilot-plan.md) | Rencana pilot untuk menguji style & kualitas animasi |
-| 7 | [`research/ecosystem-research.md`](research/ecosystem-research.md) | Laporan riset: lisensi, kelebihan/kekurangan, rekomendasi |
-| 11 | [`pilot/p1/README.md`](pilot/p1/README.md) | Benchmark Remotion 12 dtk + 60 dtk (waktu, RAM, CPU, stabilitas, kualitas) |
-| 10 | [`research/illusion-findings.md`](research/illusion-findings.md) | Benchmark CPU + temuan arah "Cinematic Illusion" |
-| 9 | [`identity/references/`](identity/references/00-perbandingan.md) | Analisis 3 referensi + perbandingan + identitas kandidat |
-| 8 | [`research/repo-lama-audit.md`](research/repo-lama-audit.md) | Audit read-only repo lama: masalah, yang layak dipertahankan |
-
-## Struktur
-
-```
-CLAUDE.md        instruksi proyek (pendek)
-identity/        visual identity + analisis referensi
-workflow/        alur kerja, kategori, rencana pilot
-templates/       brief, storyboard, analisis referensi
-research/        riset tools/library/skills
-videos/<slug>/   satu folder per video (brief → render)
-engine/          KOSONG sampai pilot disetujui
-assets/          KOSONG; hanya aset yang terbukti dipakai ulang
-qa/              checklist & catatan review render
-```
+## Yang dipertahankan
+| Dokumen | Isi |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | Aturan proyek |
+| [`PROPOSAL.md`](PROPOSAL.md), [`ARCHITECTURE.md`](ARCHITECTURE.md) | Proposal struktur dan arsitektur Fase 1 (versi sebelum arah ilusi/isometrik) |
+| [`workflow/`](workflow/) | Alur kerja, kategori, rencana fase dan pilot versi Fase 1 |
+| [`identity/reference-analysis-framework.md`](identity/reference-analysis-framework.md) | Cara membedah referensi |
+| [`identity/references/`](identity/references/) | 3 video referensi pemilik dan analisis 01–03 |
+| [`identity/visual-identity.md`](identity/visual-identity.md) | Kerangka kosong + syarat mutlak kualitas dari pemilik (§1b) |
+| [`research/ecosystem-research.md`](research/ecosystem-research.md), [`research/repo-lama-audit.md`](research/repo-lama-audit.md) | Riset ekosistem dan audit repo lama |
+| [`templates/`](templates/) | Template brief, storyboard, analisis referensi |

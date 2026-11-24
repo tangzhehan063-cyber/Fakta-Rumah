@@ -1,8 +1,0 @@
-[
- {
-  "name": "12 lapisan + blur 6 + sapuan + partikel, 4 worker paralel",
-  "parallel": 4,
-  "ms_per_frame_per_worker": 2052,
-  "effective_ms_per_frame": 513
- }
-]

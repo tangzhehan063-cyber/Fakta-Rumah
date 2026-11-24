@@ -1,6 +1,6 @@
 # Fakta Rumah — instruksi proyek
 
-Repo ini memproduksi video explainer. Visual dibuat lewat kode. **Tidak ada** AI image/video generation atau API AI eksternal **untuk visual**. Pengecualian yang disetujui pemilik: Gemini TTS untuk suara (Fase 5). Fase proyek: lihat `workflow/build-phases.md`.
+Repo ini memproduksi video explainer. Visual dibuat lewat kode. **Tidak ada** AI image/video generation atau API AI eksternal **untuk visual**. Pengecualian yang disetujui pemilik: Gemini TTS untuk suara (Fase 5). Fase proyek: lihat `workflow/build-phases.md`. **Status: RESET; menunggu arah visual baru dari pemilik. Jangan membangun engine atau memilih style sebelum arah baru disepakati.**
 
 ## Sumber kebenaran
 - Workflow: `workflow/workflow.md`

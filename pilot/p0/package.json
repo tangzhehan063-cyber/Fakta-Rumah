@@ -1,1 +1,0 @@
-{ "name": "p0-web", "private": true, "type": "module", "dependencies": { "three": "0.187.0" } }
