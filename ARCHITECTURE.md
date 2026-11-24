@@ -175,5 +175,10 @@ Tambahan modul *kandidat* (dibuat hanya jika terbukti dipakai ≥2 kali):
 - `reveal/` koreografer reveal bertahap (stagger, gelombang, urutan sebab-akibat).
 - `worldtext/` teks/label yang menempel pada bidang dunia (SDF/ekstrusi).
 - `scatter/` instansiasi massal.
-- `characters/` **ditunda sampai Anda memutuskan karakter diperlukan.**
+- ~~`characters/`~~ **dibatalkan**: pemilik menghindari karakter (keputusan #3).
 Aturan tetap: kontrak shot §3; tidak ada template; teknik dipilih per shot.
+
+## 10.6 Persyaratan yang diturunkan dari keputusan pemilik
+- **Sadar-rasio:** format (`9:16` sekarang, `16:9` kelak) hidup di manifest `video.json`. Komponen shot menerima ukuran kanvas dan tidak meng-hardcode 1080×1920. Komposisi per rasio dipikirkan di storyboard (satu shot boleh punya framing berbeda per rasio).
+- **Pilot memuat dua jalur render** (stack web dan Blender-Python) untuk set uji yang sama, dengan kontrak shot yang sama (shot dapat berupa urutan frame dari renderer lain).
+- **Tanpa karakter:** tidak ada kebutuhan rigging; prioritas pindah ke cahaya, material berkarakter, kamera, dan reveal prosedural.

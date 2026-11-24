@@ -46,6 +46,9 @@ F1 Riset & arsitektur → F2 Referensi & identitas → F3 Core engine + pilot �
 - **Gerbang keluar:** dua video berturut-turut diproduksi lewat pipeline dengan intervensi manusia hanya pada gerbang.
 - **Batas yang jujur:** keputusan visual tetap manusia/Claude + storyboard; otomasi penuh hanya untuk resep shot yang sudah terbukti.
 
+## Keputusan Fase 2 yang sudah diambil pemilik
+Lihat `identity/visual-identity.md` §0b (8 keputusan: arah suka, sudut kamera, tanpa karakter, 9:16 dengan ruang untuk 16:9, kerapatan bertingkat, uji dua jalur render, video 03 style+proses, daftar hindari).
+
 ## Keputusan yang harus diambil Anda di Fase 1 (daftar tunggal)
 
 | # | Keputusan | Rekomendasi saya |
