@@ -7,7 +7,7 @@ Satuan: meter. Sumbu: Y ke atas (Blender mengonversi sendiri).
 
 Topik uji: "kolong wastafel dan pipa-U" (mekanisme + lingkungan sehari-hari, tanpa karakter).
 """
-import json, math, os
+import json, math, os, sys
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -194,7 +194,7 @@ MATERIALS = {
 }
 
 # ---------------------------------------------------------------- scene
-def build():
+def build(nm=False):
     objs = []
     add = objs.append
     # ruang: lantai + dua dinding (sudut ruangan, potongan)
@@ -239,7 +239,7 @@ def build():
     x0 = sink_x
     xu = x0 + 0.095      # pusat U
     r_u = 0.095
-    y_top, y_bend = 0.80, 0.36
+    y_top, y_bend = (0.88 if nm else 0.80), 0.36
     pipe_r = 0.034
     # bagian atas (opak): dari lubang wastafel turun ke awal U
     top = densify(np.array([[x0, y_top, pz], [x0, y_bend, pz]]), 0.01)
@@ -290,8 +290,8 @@ def build():
     return objs
 
 
-def build_scene():
-    objs = build()
+def build_scene(nm=False):
+    objs = build(nm)
     # kamera: koordinat bola di sekitar target (derajat). Rasio 9:16.
     cams = {
         "S1_establish": {"target": [-0.26, 0.50, -0.92], "az": 33, "el": 30, "dist": 3.9, "fov": 30, "dof": None},
@@ -320,8 +320,34 @@ def build_scene():
     return scene
 
 
+LAYER_MID = ("pipe_", "water", "collar_", "wall_flange", "marker_", "bottle_", "cap_", "cab_bottom", "cab_plinth")   # isi lemari (kedalaman tengah)
+LAYER_BACK = ("floor", "wall_", "backsplash", "skirting", "plate_")                        # latar
+# sisanya = FRONT: cangkang lemari (sisi, meja, pintu, wastafel, keran) dan ember (paling dekat kamera)
+
+def layer_of(name):
+    if name.startswith(LAYER_MID): return "MID"
+    if name.startswith(LAYER_BACK): return "BACK"
+    return "FRONT"
+
+def neutral(scene):
+    """Palet netral: kayu abu-oak, lemari antrasit; aksen hangat hanya dari penanda dan sedikit cahaya."""
+    m = scene["materials"]
+    m["wood"] = {"map": "wood_gray.png", "color": "#e4ded4", "roughness": 0.55, "metallic": 0.0}
+    m["wood_dark"] = {"color": "#34373b", "roughness": 0.5, "metallic": 0.0}
+    m["floor_tile"]["color"] = "#ffffff"
+    L = scene["lights"]
+    L["accent"].update({"strength": 0.0, "color": "#ffd3a4"})
+    m["accent_warm"]["emissive_strength"] = 0.2
+    scene["cameras"]["S2_medium"].update({"target": [-0.36, 0.45, -0.92], "dist": 2.5, "az": 20, "el": 13})
+    L["key"]["color"] = "#fff8f0"
+    L["fill"].update({"sky": "#dfe5ea", "ground": "#8b8c8c"})
+    for o in scene["objects"]: o["layer"] = layer_of(o["name"])
+    return scene
+
 if __name__ == "__main__":
-    s = build_scene()
+    s = build_scene(len(sys.argv) > 1 and sys.argv[1] == "neutral")
+    if len(sys.argv) > 1 and sys.argv[1] == "neutral":
+        OUT = os.path.join(HERE, "scene_neutral.json"); s = neutral(s)
     with open(OUT, "w") as f:
         json.dump(s, f, separators=(",", ":"))
     tri = sum(len(o["indices"]) // 3 for o in s["objects"])

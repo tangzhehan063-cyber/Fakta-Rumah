@@ -37,3 +37,39 @@ CH=/opt/pw-browsers/chromium_headless_shell-1243/chrome-headless-shell-linux64/c
 npx remotion bundle src/index.ts --out-dir=out/bundle
 python3 bench/measure.py r_c3 -- npx remotion render out/bundle Bench12 out/r_c3.mp4 --browser-executable=$CH --concurrency=3 --image-format=jpeg --jpeg-quality=90 --crf=18
 ```
+
+---
+
+## Versi 2 (`Bench12B`): perbaikan visual (24 Nov)
+Menjawab cacat v1. Hasil: `eval/bench12B.mp4`, `eval/bench12B_sheet.jpg`, `eval/bench12B_detail.jpg` (potongan resolusi penuh).
+
+| Cacat v1 | Perbaikan v2 | Hasil |
+|---|---|---|
+| Tepi benda dekat bergerigi/berganda (irisan kedalaman) | **Plat per-lapisan dari 3D**: BACK bersih, MID (isi lemari), FRONT (cangkang lemari); objek di luar lapisan **tak terlihat kamera tetapi tetap membayangi dan memantulkan cahaya** | tepi bersih pada resolusi penuh; tidak ada robekan di shot A |
+| Rack focus sempat membuat semua kabur | bobot ketajaman per kedalaman; selalu ada lapisan yang tajam; fokus label→pipa; blur latar-depan realistis | terlihat benar di frame 4,2–7,3 dtk |
+| Larut B→C menghasilkan citra ganda | **potong pada lepas-fokus**: B kabur lalu C menetap dari kabur ke tajam (potongan tersembunyi oleh blur, tanpa tumpang tindih) | tanpa citra ganda |
+| Palet condong cokelat/oranye | varian netral: kayu abu-oak, lemari antrasit, tanpa lampu aksen hangat, emisi kolar 0,2; aksen hangat hanya kolar | netral dengan aksen kecil |
+| Label terpotong di tepi | S2 dibingkai ulang (target x −0,36, jarak 2,5) | label terbaca penuh |
+| Ujung pipa melayang di bawah meja | pipa diperpanjang ke dalam meja; tertutup lapisan FRONT | tidak melayang |
+| Kabut/debu tak terlihat | debu lebih besar/jelas dalam berkas cahaya, tetap halus | terbaca sebagai debu halus |
+
+**Kesalahan saya yang ditemukan di tengah jalan (pelajaran arsitektur):**
+1. Pengelompokan lapisan berdasarkan fungsi (subjek/lemari) menghasilkan **urutan kedalaman terbalik** (pipa di dalam lemari justru bergerak lebih cepat daripada rangka lemari). Lapisan harus mengikuti **urutan kedalaman dari kamera**.
+2. Objek yang berdiri di atas permukaan (botol di dasar lemari) harus **satu lapisan dengan permukaannya**; jika terpisah, permukaan di depan objek menutupinya dengan bayangan kontak hitam.
+3. Lapisan subjek yang dirender tanpa oklusi menembus keluar di atas penutup (pipa muncul di atas meja) sampai lapisan depan ditempatkan di atas.
+4. Faktor parallax antar-lapisan harus **berdekatan** (0,5/0,68/0,85) agar garis kontak (lemari-lantai) tidak "meluncur".
+
+**Biaya v2 (diukur):**
+- Render Remotion 12 dtk, bundling terpisah: **33,8 dtk** (c=3), **48,2 dtk** (c=1); RAM puncak 2,4 GB (c=3) / 1,5 GB (c=1); CPU rata-rata 2,35 inti. Biaya render tidak naik dibanding v1 (35,7 dtk) walau memakai tiga lapisan + blur cross-fade.
+- Pabrik plat (sekali, Blender CPU, 48 spp, 1080×1920): **BACK 113–138 dtk, MID 25–53 dtk, FRONT 41–60 dtk per shot (≈3,3–4 menit per shot)**, plus ±2 menit untuk shot satu-gambar (S4).
+- **Determinisme (koreksi):** v1 identik byte-per-byte. Untuk v2, concurrency 3 vs 1 menghasilkan berkas yang **tidak byte-identik**: **2 dari 360 frame** berbeda ≤2/255 level (shot C, kemungkinan antialiasing lingkaran debu). Secara visual identik.
+
+**Kekurangan yang masih ada (jujur):**
+- Isi benchmark tetap satu ruangan (kolong wastafel); belum membuktikan variasi dunia.
+- Debu dan berkas cahaya sangat halus; saya nilai plausibel tetapi bisa terlalu tipis bagi Anda.
+- Rack focus memakai satu tingkat blur LOD per lapisan (cross-fade); bukan blur bervariasi kontinu menurut kedalaman di dalam satu lapisan (lantai yang menjauh tidak bertingkat).
+- Parallax aman hanya dalam amplop kecil; push-in 9–10% sudah dipakai di B tanpa artefak terlihat, gerak lebih besar belum diuji dengan plat berlapis.
+- Bayangan di BACK/MID dihitung untuk posisi awal; saat lapisan bergeser, bayangan kontak tidak ikut bergeser (kecil pada amplop ini).
+- Belum diuji di Remotion: Three.js/`@remotion/three`, audio, caption.
+
+**Reproduksi plat v2** (butuh `bpy` di venv): `python3 spec/build_scene.py neutral` (dari `../p0`), lalu `SCENE=spec/scene_neutral.json VIEW="Khronos PBR Neutral" ONLY=S1_establish,S2_medium /path/venv/bin/python blender/render.py layers 48 1.0`, `ONLY=S4_high ... stills 48 1.0`, lalu `python3 scripts/make_plates2.py`. Plat tidak disimpan di Git (besar); render ulang ±15 menit.

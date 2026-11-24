@@ -1,0 +1,17 @@
+00:00.452  cycles           | WARNING CUEW initialization failed: Error opening the library
+/home/user/fakta-rumah/pilot/p0/blender/render.py:54: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+/home/user/fakta-rumah/pilot/p0/blender/render.py:123: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world = bpy.data.worlds.new("w"); scene.world = world; world.use_nodes = True
+01:57.921  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S1_establish_BACK.png'
+layer S1_establish BACK 117.1 s
+02:52.352  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S1_establish_MID.png'
+layer S1_establish MID 54.4 s
+03:16.526  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S1_establish_FG.png'
+layer S1_establish FG 24.2 s
+05:33.996  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S2_medium_BACK.png'
+layer S2_medium BACK 137.5 s
+06:38.790  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S2_medium_MID.png'
+layer S2_medium MID 64.8 s
+07:16.097  render           | Saved: '/home/user/fakta-rumah/pilot/p0/out/blender/layers/S2_medium_FG.png'
+layer S2_medium FG 37.3 s

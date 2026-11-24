@@ -87,3 +87,9 @@ Konteks: produksi dokumenter menit-an pada CPU-only; 3D penuh sebagai pengecuali
 | 4 | **Blender (Python) sebagai pabrik plat: diterima** (hanya merender plat, bukan seluruh video) | bpy GPL-3.0; tinjau bila kode didistribusikan |
 
 **Hasil P1 terhadap target:** render 3,0–4,1× durasi (jauh di bawah 60–90× yang diterima), RAM ≤3,5 GB, stabil dan deterministik, kualitas encode transparan → **infrastruktur memenuhi target**. Usulan: **Remotion menjadi kompositor resmi, bersyarat:** (a) pemilik mengonfirmasi kelayakan lisensi Remotion (individu atau ≤3 karyawan) dan menerima risiko perubahan lisensi v5.0; (b) uji Three.js/`@remotion/three` dan audio/caption di dalam Remotion sebelum Mode B-kedalaman/C dianggap resmi. **Kualitas visual benchmark belum memenuhi standar sinematik** (lihat `pilot/p1/README.md`); itu bukan alasan menolak kompositor, tetapi pekerjaan prioritas berikutnya.
+
+### Status prioritas setelah P1 v2 (24 Nov)
+- **Prioritas 1 (pabrik plat):** prototipe berjalan (per-lapisan, `visible_camera`, blur LOD); belum menjadi modul resmi.
+- **Prioritas 2 (kompositor Remotion):** infrastruktur lolos; **lisensi dikonfirmasi pemilik: individu.** **Remotion ditetapkan sebagai kompositor resmi** (kondisi b: uji Three.js/`@remotion/three`, audio, caption di dalam Remotion masih berlaku sebelum Mode B-kedalaman/C resmi).
+- **Prioritas 3 (amplop kamera + disokulasi):** sebagian terjawab (plat berlapis menghilangkan robekan pada push-in ≤10%); amplop sebenarnya belum dikalibrasi.
+- Berikutnya: uji `@remotion/three` (Mode C) dan audio/caption di Remotion; kalibrasi amplop; variasi dunia (bukan hanya satu ruangan).

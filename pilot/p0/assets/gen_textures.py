@@ -120,6 +120,25 @@ def wood():
     save(img, "wood.png")
 
 
+def wood_gray():
+    r = np.random.default_rng(21)
+    img = np.zeros((S, S, 3), np.float32)
+    base = hexrgb("#a29d94"); dark = hexrgb("#76726b")
+    planks = 4; ph = S // planks
+    for p in range(planks):
+        y0, y1 = p * ph, (p + 1) * ph
+        tint = 1 + (r.random() - 0.5) * 0.12
+        a = r.random((ph // 6, 8)).astype(np.float32)
+        g = np.asarray(Image.fromarray((a * 255).astype(np.uint8)).resize((S, ph), Image.BICUBIC), np.float32) / 255
+        b = np.asarray(Image.fromarray((r.random((ph // 2, 3)) * 255).astype(np.uint8)).resize((S, ph), Image.BICUBIC), np.float32) / 255
+        tt = 0.6 * g + 0.4 * b
+        ring = 0.5 + 0.5 * np.sin(tt * 22 + np.linspace(0, 6, ph)[:, None])
+        mix = (0.55 * tt + 0.45 * ring)[..., None]
+        img[y0:y1] = (dark[None, None] * (1 - mix) + base[None, None] * mix) * tint
+        img[y0:y0 + 3] *= 0.55
+    save(img, "wood_gray.png")
+
+
 def stone():
     f = fbm(S, 5, octaves=(4, 10, 40, 160), weights=(0.35, 0.3, 0.2, 0.15))
     base = hexrgb("#8f9392")
@@ -149,6 +168,6 @@ def label():
 
 
 if __name__ == "__main__":
-    for fn in (floor_tile, subway, plaster, wood, stone, label):
+    for fn in (floor_tile, subway, plaster, wood, wood_gray, stone, label):
         fn()
     print("tekstur ->", OUT, sorted(os.listdir(OUT)))

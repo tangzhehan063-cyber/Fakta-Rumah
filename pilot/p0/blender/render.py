@@ -13,7 +13,7 @@ ROOT = os.path.dirname(HERE)
 mode = sys.argv[1] if len(sys.argv) > 1 else "stills"
 samples = int(sys.argv[2]) if (len(sys.argv) > 2 and sys.argv[2].isdigit()) else 64
 scale = 1.0 if mode == "depth" else (float(sys.argv[3]) if len(sys.argv) > 3 else 1.0)
-S = json.load(open(os.path.join(ROOT, "spec/scene.json")))
+S = json.load(open(os.path.join(ROOT, os.environ.get("SCENE", "spec/scene.json"))))
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.preferences.addon_enable(module="cycles")
@@ -33,7 +33,7 @@ scene.render.resolution_x = int(S["format"]["width"] * scale)
 scene.render.resolution_y = int(S["format"]["height"] * scale)
 scene.render.resolution_percentage = 100
 scene.render.image_settings.file_format = "PNG"
-scene.view_settings.view_transform = "AgX"
+scene.view_settings.view_transform = os.environ.get("VIEW", "AgX")
 scene.view_settings.look = "None"
 scene.view_settings.exposure = 0.0
 
@@ -199,6 +199,20 @@ if mode == "depth":
     for name in sys.argv[2:]:
         apply_cam(S["cameras"][name]); camd.dof.use_dof = False
         t = render(os.path.join(ROOT, f"out/blender/depth_{name}.png")); print("depth", name, round(t, 1), "s")
+    sys.exit(0)
+
+if mode == "layers":
+    objs = {o["name"]: bpy.data.objects[o["name"]] for o in S["objects"]}
+    layer_of = {o["name"]: o.get("layer", "MID") for o in S["objects"]}
+    os.makedirs(os.path.join(ROOT, "out/blender/layers"), exist_ok=True)
+    only = os.environ.get("ONLY", "").split(",")
+    for name in only:
+        apply_cam(S["cameras"][name])
+        for L in os.environ.get("LAYERS", "BACK,MID,FRONT").split(","):
+            # objek di luar lapisan: tak terlihat KAMERA tetapi tetap membayangi dan memantulkan cahaya (pencahayaan konsisten)
+            for n, ob in objs.items(): ob.visible_camera = (layer_of[n] == L)
+            scene.render.film_transparent = (L != "BACK")
+            t = render(os.path.join(ROOT, f"out/blender/layers/{name}_{L}.png")); print("layer", name, L, round(t, 1), "s", flush=True)
     sys.exit(0)
 timings = {}
 if mode == "stills":

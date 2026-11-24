@@ -1,3 +1,5 @@
 node_modules/
 out/
 *.log
+public/plates2/
+public/plates/

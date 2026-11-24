@@ -255,3 +255,12 @@ Selain Q0–Q5 (§6): **Q6 artefak ilusi** — cek tarikan tekstur di tepi benda
 
 ## 11.8 Yang perlu didesain ulang dari keadaan sekarang
 Spesifikasi dunia P0 → masukan pabrik plat; kontrak shot → tambah `mode/plates/envelope`; renderer web P0 → profil "hemat" sebagai bawaan; Blender → pabrik plat (bukan perender video penuh); QA → Q6–Q8; manifest `video.json` → tambah mode, plat, anggaran.
+
+## 11.9 Aturan pembuatan plat (dipelajari di P1 v2, diuji) [U][P]
+1. **Lapisan mengikuti urutan kedalaman dari kamera**, bukan fungsi benda. Contoh: pipa di dalam lemari berada di lapisan tengah di belakang cangkang lemari (FRONT), bukan di depannya.
+2. **Benda yang berdiri di atas permukaan satu lapisan dengan permukaan itu** (botol + dasar lemari); jika tidak, permukaan di depan benda menutupinya dengan bayangan kontak.
+3. **Objek di luar lapisan dibuat tak terlihat kamera tetapi tetap membayangi/memantulkan cahaya** (`visible_camera=False` di Cycles): pencahayaan konsisten dan lapisan di belakang lengkap (tanpa lubang disokulasi).
+4. **Faktor parallax antar-lapisan berdekatan** (mis. 0,5/0,68/0,85) agar garis kontak tidak meluncur; kedalaman terasa dari skala push-in dan blur latar/depan.
+5. **Rack focus = bobot ketajaman per kedalaman** (selalu ada lapisan yang tajam); blur dipanggang per lapisan (LOD) lalu cross-fade.
+6. **Transisi:** potong yang disembunyikan oleh lepas-fokus lebih aman daripada larut antar-kamera (yang menghasilkan citra ganda).
+7. Biaya pabrik plat ≈3,3–4 menit per shot (3 lapisan, 48 spp, CPU 4 inti); biaya Remotion ≈33,8 dtk per 12 dtk.
