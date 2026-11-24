@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#111;overflow:hidden}
+#stage{position:absolute;inset:0;width:1080px;height:1920px;perspective:1400px;overflow:hidden}
+.L{position:absolute;left:0;top:0;width:1080px;height:1920px;background-size:100% 100%;will-change:transform}
+#sweep{position:absolute;inset:0;mix-blend-mode:screen;pointer-events:none}
+#cv{position:absolute;inset:0;pointer-events:none}
+</style></head><body><div id="stage"></div><canvas id="cv" width="1080" height="1920"></canvas>
+<script>
+const P=new URLSearchParams(location.search);
+const NL=+P.get('n')||6, BLUR=+P.get('blur')||0, SWEEP=P.get('sweep')==='1', PART=+P.get('part')||0, SCALE=+P.get('scale')||1;
+const st=document.getElementById('stage');
+const bg=document.createElement('div');bg.className='L';bg.style.backgroundImage='url(layers/bg.jpg)';st.appendChild(bg);
+const layers=[];
+for(let i=0;i<NL;i++){const d=document.createElement('div');d.className='L';d.style.backgroundImage=`url(layers/l${i%12}.png)`;
+  if(i<BLUR) d.style.filter='blur(6px)'; st.appendChild(d);layers.push(d);}
+let sw=null;if(SWEEP){sw=document.createElement('div');sw.id='sweep';st.appendChild(sw);}
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const pts=Array.from({length:PART},(_,i)=>({x:(i*97)%1080,y:(i*211)%1920,r:1+(i%3)}));
+window.setFrame=(f,n=90)=>{const u=f/(n-1);
+  bg.style.transform=`translateZ(${-200+u*60}px) scale(1.2)`;
+  layers.forEach((d,i)=>{const z=-120+i*(300/NL)+u*(30+i*6);d.style.transform=`translateX(${(u-.5)*(10+i*4)}px) translateZ(${z}px) rotateY(${(u-.5)*2}deg)`});
+  if(sw) sw.style.background=`linear-gradient(105deg,rgba(0,0,0,0) ${u*100-20}%,rgba(255,235,210,.28) ${u*100}%,rgba(0,0,0,0) ${u*100+20}%)`;
+  if(PART){ctx.clearRect(0,0,1080,1920);ctx.fillStyle='rgba(255,255,255,.5)';pts.forEach(p=>{const y=(p.y-u*80+1920)%1920;ctx.beginPath();ctx.arc(p.x+Math.sin(u*6+p.y)*6,y,p.r,0,6.3);ctx.fill();});}
+  return true;};
+window.__ready=true;
+</script></body></html>
